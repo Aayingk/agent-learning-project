@@ -1,0 +1,13 @@
+{
+  "tasks": [
+    {
+      "id": "c200b479",
+      "cron": "0 9 * * 1,4",
+      "prompt": "用户完成了 Agent 学习第一阶段（L1-L5）。请提醒用户复习以下内容：\n\nL1: LLM 基础 - Token、Context Window、Temperature、KV Cache\nL2: Agent 核心概念 - ReAct 模式、状态机、Agent vs Chatbot\nL3: Prompt Engineering - 角色设定、Few-Shot、CoT、Prompt Injection 防御\nL4: 数据模型与验证 - Pydantic BaseModel、Field 验证\nL5: 异步编程 - async/await、asyncio.gather、并发 vs 并行\n\n复习文件位置：docs/lessons/L01-LLM-Basics.ipynb 到 L05-Async-Programming.ipynb\n\n建议复习方式：运行 notebook 中的代码示例，结合项目源码理解实现",
+      "createdAt": 1778764634029,
+      "recurring": true,
+      "createdBySessionId": "980b035d-c0e9-4393-8de9-b29205df1bcb",
+      "createdByPid": 2280
+    }
+  ]
+}
