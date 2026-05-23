@@ -82,6 +82,15 @@ class ToolRegistry:
         return cls._tools.copy()
 
     @classmethod
+    def list_tools(cls) -> Dict[str, BaseTool]:
+        """
+        列出所有已注册工具
+
+        返回工具字典，键为工具名称，值为工具实例
+        """
+        return cls._tools.copy()
+
+    @classmethod
     def get_llm_tool_definitions(cls) -> List[Dict]:
         """
         获取所有工具的LLM格式定义
