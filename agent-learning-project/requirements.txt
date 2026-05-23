@@ -8,6 +8,7 @@ langgraph>=0.0.20
 # LLM Providers
 openai>=1.0.0
 anthropic>=0.18.0
+zhipuai>=2.0.0
 
 # Vector Store & Embeddings
 chromadb>=0.4.0

@@ -12,7 +12,7 @@ from backend.llm import LLMFactory, Message
 load_dotenv()
 
 
-async def test_openai():
+async def demo_openai():
     """测试OpenAI客户端"""
     print("\n=== 测试 OpenAI ===")
 
@@ -45,7 +45,7 @@ async def test_openai():
         print(f"❌ OpenAI测试失败: {e}")
 
 
-async def test_anthropic():
+async def demo_anthropic():
     """测试Anthropic客户端"""
     print("\n=== 测试 Anthropic ===")
 
@@ -72,7 +72,7 @@ async def test_anthropic():
         print(f"❌ Anthropic测试失败: {e}")
 
 
-async def test_ollama():
+async def demo_ollama():
     """测试Ollama客户端"""
     print("\n=== 测试 Ollama ===")
 
@@ -96,7 +96,7 @@ async def test_ollama():
         print("提示：请确保已安装并启动Ollama服务")
 
 
-async def test_tool_calling():
+async def demo_tool_calling():
     """测试工具调用功能"""
     print("\n=== 测试工具调用 ===")
 
@@ -152,10 +152,10 @@ async def main():
     print("开始测试LLM后端...")
     print(f"当前工作目录: {os.getcwd()}")
 
-    await test_openai()
-    await test_anthropic()
-    await test_ollama()
-    await test_tool_calling()
+    await demo_openai()
+    await demo_anthropic()
+    await demo_ollama()
+    await demo_tool_calling()
 
     print("\n" + "=" * 40)
     print("测试完成！")

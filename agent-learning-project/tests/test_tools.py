@@ -2,11 +2,7 @@
 工具系统测试脚本
 """
 
-import sys
-import io
-
-# 设置stdout编码为utf-8
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+import os
 
 from backend.tools import (
     ToolRegistry,
@@ -130,6 +126,9 @@ def test_file_operations():
 
 def test_search():
     """测试搜索工具（需要网络）"""
+    if os.getenv("RUN_NETWORK_TESTS") != "1":
+        print("\n=== 跳过搜索工具网络测试（设置 RUN_NETWORK_TESTS=1 启用）===")
+        return
     print("\n=== 测试搜索工具 ===")
 
     search = ToolRegistry.get("search")

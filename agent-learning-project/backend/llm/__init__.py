@@ -1,4 +1,6 @@
-"""LLM后端模块"""
+"""LLM backend module."""
+
+from importlib import import_module
 
 from backend.llm.base import BaseLLM, LLMError
 from backend.llm.models import (
@@ -11,17 +13,18 @@ from backend.llm.models import (
     TokenUsage,
 )
 from backend.llm.factory import LLMFactory
-from backend.llm.openai_client import OpenAILLM
-from backend.llm.anthropic_client import AnthropicLLM
-from backend.llm.ollama_client import OllamaLLM
-from backend.llm.glm_client import GLMLLM
-from backend.llm.deepseek_client import DeepSeekLLM
+
+_CLIENT_EXPORTS = {
+    "OpenAILLM": "backend.llm.openai_client",
+    "AnthropicLLM": "backend.llm.anthropic_client",
+    "OllamaLLM": "backend.llm.ollama_client",
+    "GLMLLM": "backend.llm.glm_client",
+    "DeepSeekLLM": "backend.llm.deepseek_client",
+}
 
 __all__ = [
-    # Base
     "BaseLLM",
     "LLMError",
-    # Models
     "Message",
     "ChatResponse",
     "EmbeddingResponse",
@@ -29,12 +32,15 @@ __all__ = [
     "ToolCall",
     "FunctionDefinition",
     "TokenUsage",
-    # Factory
     "LLMFactory",
-    # Clients
-    "OpenAILLM",
-    "AnthropicLLM",
-    "OllamaLLM",
-    "GLMLLM",
-    "DeepSeekLLM",
+    *sorted(_CLIENT_EXPORTS),
 ]
+
+
+def __getattr__(name: str):
+    if name not in _CLIENT_EXPORTS:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    module = import_module(_CLIENT_EXPORTS[name])
+    value = getattr(module, name)
+    globals()[name] = value
+    return value

@@ -4,7 +4,7 @@ Agent基础架构
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional, Callable
+from typing import Any, Dict, List, Optional
 from enum import Enum
 from pydantic import BaseModel, Field
 
@@ -184,15 +184,14 @@ class BaseAgent(ABC):
 
         return results
 
-    def add_message(
+    async def add_message(
         self,
         session_id: str,
         message: Message,
     ) -> None:
-        """添加消息到记忆"""
+        """Add a message to memory without nesting event loops."""
         if self.memory and self.config.enable_memory:
-            import asyncio
-            asyncio.run(self.memory.add_message(session_id, message))
+            await self.memory.add_message(session_id, message)
 
     def get_messages(
         self,

@@ -61,7 +61,7 @@ class GLMLLM(BaseLLM):
     async def chat(
         self,
         messages: List[Message],
-        tools: Optional[List[ToolDefinition]] = None,
+        tools: Optional[List[ToolDefinition] | List[Dict]] = None,
         temperature: float = 0.7,
         max_tokens: Optional[int] = None,
         **kwargs,
@@ -174,18 +174,28 @@ class GLMLLM(BaseLLM):
         return api_messages
 
     def _convert_tools(self, tools: List[ToolDefinition]) -> List[Dict[str, Any]]:
-        """将内部工具格式转换为智谱API格式"""
-        return [
-            {
-                "type": tool.type,
-                "function": {
-                    "name": tool.function.name,
-                    "description": tool.function.description,
-                    "parameters": tool.function.parameters,
-                },
-            }
-            for tool in tools
-        ]
+        """将内部工具格式转换为智谱API格式
+
+        支持两种输入格式：
+        1. ToolDefinition 对象
+        2. 字典格式（来自 ToolRegistry.get_llm_tool_definitions()）
+        """
+        result = []
+        for tool in tools:
+            if isinstance(tool, dict):
+                # 已经是字典格式，直接使用
+                result.append(tool)
+            else:
+                # ToolDefinition 对象，转换格式
+                result.append({
+                    "type": tool.type,
+                    "function": {
+                        "name": tool.function.name,
+                        "description": tool.function.description,
+                        "parameters": tool.function.parameters,
+                    },
+                })
+        return result
 
     def _parse_chat_response(self, response: Any) -> ChatResponse:
         """解析智谱API响应"""

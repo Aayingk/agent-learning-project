@@ -66,7 +66,7 @@ class AnthropicLLM(BaseLLM):
     async def chat(
         self,
         messages: List[Message],
-        tools: Optional[List[ToolDefinition]] = None,
+        tools: Optional[List[ToolDefinition] | List[Dict]] = None,
         temperature: float = 0.7,
         max_tokens: Optional[int] = None,
         **kwargs,
@@ -204,15 +204,34 @@ class AnthropicLLM(BaseLLM):
         return system_message, api_messages
 
     def _convert_tools(self, tools: List[ToolDefinition]) -> List[Dict[str, Any]]:
-        """将内部工具格式转换为Anthropic API格式"""
-        return [
-            {
-                "name": tool.function.name,
-                "description": tool.function.description,
-                "input_schema": tool.function.parameters,
-            }
-            for tool in tools
-        ]
+        """将内部工具格式转换为Anthropic API格式
+
+        支持两种输入格式：
+        1. ToolDefinition 对象
+        2. 字典格式（来自 ToolRegistry.get_llm_tool_definitions()）
+        """
+        result = []
+        for tool in tools:
+            if isinstance(tool, dict):
+                # 已经是字典格式，检查是否需要转换
+                if "function" in tool:
+                    # OpenAI 格式，转换为 Anthropic 格式
+                    result.append({
+                        "name": tool["function"]["name"],
+                        "description": tool["function"]["description"],
+                        "input_schema": tool["function"]["parameters"],
+                    })
+                else:
+                    # 已经是 Anthropic 格式
+                    result.append(tool)
+            else:
+                # ToolDefinition 对象，转换格式
+                result.append({
+                    "name": tool.function.name,
+                    "description": tool.function.description,
+                    "input_schema": tool.function.parameters,
+                })
+        return result
 
     def _parse_chat_response(self, response: Any) -> ChatResponse:
         """解析Anthropic API响应"""

@@ -5,7 +5,7 @@ description = "A comprehensive Agent development learning project"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "zhipuai>=2.1.5.20250825",
+    "zhipuai>=2.0.0",
 ]
 
 [project.optional-dependencies]

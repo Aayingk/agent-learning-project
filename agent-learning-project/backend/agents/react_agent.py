@@ -121,8 +121,8 @@ class ReActAgent(BaseAgent):
             )
 
         # 保存对话到记忆
-        self.add_message(session_id, user_msg)
-        self.add_message(
+        await self.add_message(session_id, user_msg)
+        await self.add_message(
             session_id,
             Message(
                 role="assistant",
@@ -238,8 +238,8 @@ class ConversationalAgent(BaseAgent):
         )
 
         # 保存对话
-        self.add_message(session_id, user_msg)
-        self.add_message(
+        await self.add_message(session_id, user_msg)
+        await self.add_message(
             session_id,
             Message(role="assistant", content=response.content),
         )
